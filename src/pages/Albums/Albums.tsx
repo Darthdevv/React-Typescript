@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface Album {
   userId: number;
@@ -12,12 +12,16 @@ const Albums = () => {
   const [albums, setAlbums] = useState<Album[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<unknown>();
+  const abortControllerRef = useRef<AbortController | null>(null);
 
   useEffect(() => {
     const fetchAlbums = async () => {
-      try {
+      abortControllerRef.current?.abort();
+      abortControllerRef.current = new AbortController();
+
         setLoading(true);
-        const response = await fetch(`${BASE_URL}/albums`);
+      try {
+        const response = await fetch(`${BASE_URL}/albums`, {signal: abortControllerRef.current?.signal,});
         const albums = (await response.json()) as Album[];
         setAlbums(albums);
       } catch (error: unknown) {
