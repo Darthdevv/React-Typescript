@@ -1,14 +1,23 @@
 import { useForm, SubmitHandler } from "react-hook-form";
 import { ClipLoader } from "react-spinners";
+import { z } from "zod";
 
 const Login = () => {
 
-  const {register, setError, formState: {errors, isSubmitting}, handleSubmit} = useForm<FormFields>();
+  const schema = z.object({
+    email: z.string().email(),
+    password: z.string().min(8)
+  });
 
-  type FormFields = {
-    email: string,
-    password: string
-  }
+  type FormFields = z.infer<typeof schema>;
+
+  const { register, setError, formState: { errors, isSubmitting }, handleSubmit } = useForm<FormFields>(
+    {
+      defaultValues: {
+        email: "test@email.com"
+      }
+    }
+  );
 
   const submit: SubmitHandler<FormFields> = async (data) => {
     try {
@@ -26,17 +35,10 @@ const Login = () => {
   return (
     <form onSubmit={handleSubmit(submit)}>
       <input
+        autoFocus
         type="email"
         placeholder="Email"
-        {...register("email", {
-          required: "Email is required",
-          validate: (value: string) => {
-            if (!value.includes("@")) {
-              return "Email must include @";
-            }
-            return true;
-          },
-        })}
+        {...register("email")}
       />
       {errors.email && (
         <div className="text-red-500">{errors.email.message}</div>
@@ -45,13 +47,7 @@ const Login = () => {
       <input
         type="password"
         placeholder="Password"
-        {...register("password", {
-          required: "Password is required",
-          minLength: {
-            value: 8,
-            message: "Password must be at least 8 characters",
-          },
-        })}
+        {...register("password")}
       />
       {errors.password && (
         <div className="text-red-500">{errors.password.message}</div>
