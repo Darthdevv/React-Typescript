@@ -67,3 +67,45 @@
     @apply bg-background text-foreground;
   }
 }
+
+body{
+  background-color: #0F1117;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+form{
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: center;
+  gap: 10px;
+}
+
+input{
+  padding: 5px 20px;
+  border-radius: 4px;
+  background-color: #2929299f;
+  border: 1px solid #7c7c7c79;
+}
+
+button{
+  width: 100%;
+  background-color: #eee;
+  color: #0F1117;
+  border: none;
+  padding: 5px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover{
+  background-color: #ccc;
+}
+
+button:active{
+  background-color: #fff;
+}

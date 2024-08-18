@@ -5,9 +5,9 @@ import Login from './pages/Log/Login'
 function App() {
 
   return (
-    <>
+    <div>
       <Login />
-    </>
+    </div>
   )
 }
 
